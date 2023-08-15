@@ -1,0 +1,11 @@
+Bogotá-Cali-1000
+Cali-Bogotá-500
+Cali-Tokyo-2000
+Tokyo-Neiva-2500
+Yopal-Madrid-2800
+New York-Seoul-1500
+Bogotá-Yopal-500
+Madrid-New York-1000
+
+origen:Bogotá
+destino:Seoul
