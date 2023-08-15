@@ -21,7 +21,7 @@ def read_graph(file):
     graph = {}
     with open(file, 'r') as f:
         for line in f:
-            line=line.replace(':',',' ).replace('\n','')
+            line=line.replace(':',',' ).replace('\n','').replace(" ","")
             lista=line.split(',')
             key=lista[0]
             val=lista[1:]
@@ -29,7 +29,9 @@ def read_graph(file):
     return graph
 
 def main():
-    graph =read_graph('problema1.txt')
+    print("Ingrese el nombre del archivo que contiene el grafo")
+    file=input()
+    graph =read_graph(file)
     print("Para el grafo : ",graph)
     if six_degrees(graph):
         print('La teoria de los 6 grados de separacion es cierta')
