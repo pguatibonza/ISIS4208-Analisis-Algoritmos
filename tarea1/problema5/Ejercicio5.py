@@ -1,6 +1,7 @@
 from pathlib import Path
 
 class UnionFind:
+    
     def __init__(self, n):
         self.parent = list(range(n))
         self.rank = [0] * n
@@ -44,22 +45,35 @@ def poblarGrafo():
     p = Path(__file__).with_name('input.txt')
     with p.open('r') as file:
         for line in file:
+            print(line)
             if line.startswith("#"):
                 continue 
-            elif line is not "":
+            elif line.__contains__("-"):
                 content = line.split("-")
-                graph[int(content[0])].append((int(content[1]),int(content[2])))
-                graph[int(content[1])].append((int(content[0]),int(content[2])))
+                if graph.get(int(content[0])) != None:
+                    list = []
+                    list.extend(graph[int(content[0])])
+                    list.extend([(int(content[1]),int(content[2]))])
+                    graph[int(content[0])] = list
+                else:
+                    graph[int(content[0])] = [(int(content[1]),int(content[2]))]
+                if graph.get(int(content[1])) != None:
+                    list = []
+                    list.extend(graph[int(content[1])])
+                    list.extend([(int(content[0]),int(content[2]))])
+                    graph[int(content[1])] = list
+                else:
+                    graph[int(content[1])] = [(int(content[0]),int(content[2]))]
+                    
+        print(graph)
 
 
 # Ejemplo de grafo de la ciudad (formato: {origen: [(destino, costo)]})
 graph = {
-    0: [(1, 3), (2, 5)],
-    1: [(2, 1), (3, 6)],
-    2: [(3, 4)],
-    3: [(4, 2)],
-    4: []
+
 }
+
+poblarGrafo()
 
 # Obtener el Bosque de Expansión Mínima (Minimum Spanning Forest)
 mst = kruskal_mst(graph)
