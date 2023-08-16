@@ -1,0 +1,8 @@
+#Conjunto de parejas que representan las calles que conectan las intersecciones y el costo de ampliarlas ej: origen-destino-costo
+
+1-5-100
+5-3-70
+2-3-80
+5-2-110
+1-3-50
+1-2-60
