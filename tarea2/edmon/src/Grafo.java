@@ -10,7 +10,7 @@ public class Grafo {
     public Grafo(int n){
         this.n = n;
         adyacentes=new ArrayList[n];
-        for(int i=1; i<=n; i++){
+        for(int i=0; i<n; i++){
             adyacentes[i]=new ArrayList<Arco>();
         }  
 
