@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 public class Grafo {
@@ -26,21 +28,66 @@ public class Grafo {
     }
 
     //implementar bfs
-    public List<Integer> bfs(int origen){
-        List<Integer> visitados=new ArrayList<Integer>();
-        Set<Integer> pendientes=new HashSet<Integer>();
+    public Boolean bfs(int[]ruta,int origen,int destino ){
+        Boolean visitados[]=new Boolean[n];
+        for(int i=0; i<n; i++){
+            visitados[i]=false;
+        }
+        Queue<Integer> pendientes=new LinkedList<>();
+
         pendientes.add(origen);
         while(!pendientes.isEmpty()){
-            int actual=pendientes.iterator().next();
-            pendientes.remove(actual);
-            visitados.add(actual);
+            int actual=pendientes.poll();
+            visitados[actual]=true;
+
             for(Arco arco: adyacentes[actual]){
-                if(!visitados.contains(arco.destino)){
-                    pendientes.add(arco.destino);
+                if(!visitados[arco.destino] && arco.capacidad>arco.flujo){
+                    pendientes.add(arco.destino);  
+                    ruta[arco.destino]=actual;   
                 }
             }
         }
-        return visitados;
+        return visitados[destino];
+    }
+    public int flujoMaximo(int origen, int destino){
+        int[] ruta = new int[n];
+        int flujoMaximo = 0;
+
+        while(bfs(ruta,origen,destino)){
+            int flujoActual=Integer.MAX_VALUE;
+
+            for(int v=destino;v!=origen;v=ruta[v]){
+                int u=ruta[v];
+
+                for(Arco arco: adyacentes[u]){
+                    if(arco.destino==v){
+                        flujoActual=Math.min(flujoActual,arco.capacidad-arco.flujo);
+                        break;
+                    }
+                }
+            }
+            for(int v=destino;v!=origen;v=ruta[v]){
+                int u=ruta[v];
+
+                for(Arco arco: adyacentes[v]){
+                    if(arco.destino==u){
+                        arco.flujo-=flujoActual;
+                    }
+                }
+
+                for(Arco arco: adyacentes[u]){
+                    if(arco.destino==v){
+                        arco.flujo+=flujoActual;
+                    }
+                }
+
+                flujoMaximo+=flujoActual;
+
+            }
+
+        }   
+        return flujoMaximo;
+
     }
 
 }
