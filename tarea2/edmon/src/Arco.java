@@ -13,4 +13,20 @@ public class Arco {
         this.fuente=fuente;
         this.destino=destino;
     }
+    
+    public int getFlujo() {
+    	return this.flujo;
+    }
+    
+    public int getFuente() {
+    	return this.fuente;
+    }
+    
+    public int getCapacidad() {
+    	return this.capacidad;
+    }
+    
+    public int getDestino() {
+    	return this.fuente;
+    }
 }
