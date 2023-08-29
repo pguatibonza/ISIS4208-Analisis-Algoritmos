@@ -17,6 +17,10 @@ public class Grafo {
         }  
 
     }
+    
+    public ArrayList<Arco>[] getAdyacentes(){
+    	return this.adyacentes;
+    }
 
     void addArco(int fuente, int destino,int capacidad){
         Arco arco=new Arco( fuente, destino,capacidad);
