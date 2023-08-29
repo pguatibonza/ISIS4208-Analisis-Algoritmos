@@ -45,7 +45,7 @@ def guardar_grafo_en_csv(grafo, nombre_archivo):
             writer.writerow([string])
 
 if __name__ == "__main__":
-    num_vertices = 25
+    num_vertices = 23
     grafo_aleatorio = generar_grafo_aleatorio(num_vertices)
 
     nombre_archivo_csv = "grafo_conexiones.csv"
