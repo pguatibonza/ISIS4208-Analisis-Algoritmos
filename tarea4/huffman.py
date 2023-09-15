@@ -27,16 +27,16 @@ def huffman_tree(frequencies):
         heapq.heappush(priority_queue,new_node)
 
     return priority_queue[0]
-def code_words(huffman_tree:Node,current, coded):
-    if huffman_tree.character is not None:
-        coded[huffman_tree.character]=current
-    if huffman_tree.left is not None:
-        code_words(huffman_tree.left,current+"0",coded)
-    if huffman_tree.right is not None:
-        code_words(huffman_tree.right,current+"1",coded)
-    return coded
-        
 
+def code_words(huffman_tree:Node,current="", codewords ={}):
+    if huffman_tree.character is not None:
+        codewords[huffman_tree.character]=current
+    if huffman_tree.left is not None:
+        code_words(huffman_tree.left,current+"0",codewords)
+    if huffman_tree.right is not None:
+        code_words(huffman_tree.right,current+"1",codewords)
+    return codewords
+             
 def compress(text):
     frequencies={}
     #counting the frequency of each character
@@ -48,11 +48,20 @@ def compress(text):
 
     tree= huffman_tree(frequencies)
 
-    coded={}
-    current=""
-    coded=code_words(tree,current,coded)
+    #Represents the code words for each character
+    codewords=code_words(tree)
+    
+    return codewords,tree
+    
+"""
+#TODO:
 
-    print(coded)
+sistema de lectura de archivos
+numero esperado de bits,
+entropia
+numero total de bits necesarios para guardar el texto
+"""
+
 
 compress("asjdajdjasjdajsdajdjpppqow")
 

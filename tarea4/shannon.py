@@ -18,6 +18,7 @@ def compress(text):
 
     codewords=shannon_fano(codewords,frequencies)
     print(codewords)
+    return codewords
 
 
     
@@ -47,11 +48,12 @@ def shannon_fano(codewords,frecuencies):
     else:
         return codewords
 
-
 """
-Bits esperados : 
-Total bits :
-Entropía :
+#TODO:
+sistema de lectura de archivos
+numero esperado de bits,
+entropia
+numero total de bits necesarios para guardar el texto
 """
 
 
