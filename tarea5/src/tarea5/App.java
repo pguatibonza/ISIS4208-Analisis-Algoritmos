@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,7 +35,7 @@ public class App {
 	
 	public static void metodoDirecto() throws IOException {
 		long timeStart = System.currentTimeMillis();
-		File file = new File("./input/input.txt");
+		File file = new File("tarea5/input/10.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         String line = reader.readLine();
         
@@ -81,13 +82,115 @@ public class App {
 	public static void metodoFFT() throws IOException {
 
 		long timeStart = System.currentTimeMillis();
-		File file = new File("./input/input.txt");
+		File file = new File("tarea5/input/10.txt");//cambiar
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         String line = reader.readLine();
+
+		ArrayList<Double> pol1 = new ArrayList<Double>();
+        ArrayList<Double> pol2 = new ArrayList<Double>();
         
-        //Implementar
+        while (line != null) {
+        	String[] nums = line.split(" ");
+        	pol1.add(Double.parseDouble(nums[0]));
+        	pol2.add(Double.parseDouble(nums[1]));
+            line = reader.readLine();
+        }
+	
+		//Aplicar fft a polinomios
+		List<Complex> pol1FFT=aplicarFFT(pol1);
+		List<Complex> pol2FFT=aplicarFFT(pol2);
+
+		  // Multiplicación en el dominio de la frecuencia
+		List<Complex> pol3FFT = new ArrayList<Complex>();
+		for (int i = 0; i < pol1FFT.size(); i++) {
+			pol3FFT.add(pol1FFT.get(i).multiply(pol2FFT.get(i)));
+		}
+
+		// Aplicar la transformada inversa de Fourier
+		List<Complex> pol3 = new ArrayList<Complex>();
+		pol3=ifft(pol3FFT);
+
+		//imprimir la transformada
+		for (int i = 0; i < pol3.size(); i++) {
+			System.out.println(pol3.get(i));
+		}
+
+
+
+    
         
 		long timeEnd = System.currentTimeMillis();
-		System.out.println("El tiempo tomado en segundos fue de: " + ((timeEnd - timeStart)/1000));
+		System.out.println("El tiempo tomado en milisegundos fue de: " + ((timeEnd - timeStart)));
 	}
+	public static List<Complex> aplicarFFT(ArrayList<Double> coefficients){
+		int n = coefficients.size();
+		int paddedSize = 1 << (int) Math.ceil(Math.log(n) / Math.log(2));//Tamaño de la FFT debe ser potencia de 2
+
+		// Rellenar con ceros
+		for (int i = 0; i < paddedSize - n; i++) {
+			coefficients.add(0.0);
+		}
+
+        List<Complex> complexCoefficients = new ArrayList<>();
+        for (Double coefficient : coefficients) {
+            complexCoefficients.add(new Complex(coefficient, 0));
+        }
+
+        // Aplicar la FFT
+        complexCoefficients=fft(complexCoefficients);
+
+        return complexCoefficients;
+	} 
+
+	public  static List<Complex> fft(List<Complex> a) {
+        int n = a.size();
+
+        if (n == 1) {
+			List<Complex> result=new ArrayList<Complex>(1);
+			result.add(a.get(0));
+            return result;
+        }
+
+        // Dividir en pares e impares
+        List<Complex> even = new ArrayList<Complex>(n/2);
+        for (int i = 0; i < n / 2; i++) {
+            even.add(i,a.get(2 * i));  
+        }
+		List<Complex> evenFFT=fft(even);
+
+		List<Complex> odd=new ArrayList<Complex>(n/2);
+		for(int j=0;j<n/2;j++){
+			odd.add(j,a.get(2*j +1));
+		}
+		List<Complex> oddFFT=fft(odd);
+
+        List<Complex> result=new ArrayList<Complex>(n);
+		for(int k=0;k<n;k++){
+			result.add(k,new Complex(0,0));
+		}
+		for(int k=0;k<n/2;k++){
+			double kth=-2*k*Math.PI/n;
+			Complex wk=new Complex(Math.cos(kth),Math.sin(kth));
+			result.set(k,evenFFT.get(k).add(wk.multiply(oddFFT.get(k))));
+			result.set(k+ n/2,evenFFT.get(k).subtract(wk.multiply(oddFFT.get(k))));
+		}
+		return result;
+	}
+	public static List<Complex> ifft(List<Complex> x) {
+        int n = x.size();
+
+		for (int i = 0; i < n; i++) {
+			x.set(i, x.get(i).conjugate());
+		}
+        List<Complex> y = fft(x);
+		
+		for(int i=0;i<n;i++){
+			y.set(i, y.get(i).conjugate());
+		}
+		for (int i = 0; i < n; i++) {
+			y.set(i, y.get(i).divide(n));
+		}
+        return y;
+    }
+
 }
