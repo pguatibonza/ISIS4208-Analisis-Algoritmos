@@ -27,6 +27,9 @@ public  class Complex {
         Complex conjugate(){
             return new Complex(real,-imag);
         }
+        double real(){
+            return real;
+        }
 
         @Override
         public String toString() {

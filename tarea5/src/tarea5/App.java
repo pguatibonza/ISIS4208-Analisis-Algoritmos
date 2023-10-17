@@ -97,8 +97,9 @@ public class App {
         }
 	
 		//Aplicar fft a polinomios
-		List<Complex> pol1FFT=aplicarFFT(pol1);
-		List<Complex> pol2FFT=aplicarFFT(pol2);
+		int degree=pol1.size()+pol2.size()-1;
+		List<Complex> pol1FFT=aplicarFFT(pol1,degree);
+		List<Complex> pol2FFT=aplicarFFT(pol2,degree);
 
 		  // Multiplicación en el dominio de la frecuencia
 		List<Complex> pol3FFT = new ArrayList<Complex>();
@@ -112,7 +113,9 @@ public class App {
 
 		//imprimir la transformada
 		for (int i = 0; i < pol3.size(); i++) {
-			System.out.println(pol3.get(i));
+			int temp=(int) Math.round(pol3.get(i).real());
+			System.out.print(temp+" ");
+			
 		}
 
 
@@ -120,11 +123,12 @@ public class App {
     
         
 		long timeEnd = System.currentTimeMillis();
-		System.out.println("El tiempo tomado en milisegundos fue de: " + ((timeEnd - timeStart)));
+		System.out.println("\nEl tiempo tomado en milisegundos fue de: " + ((timeEnd - timeStart)));
 	}
-	public static List<Complex> aplicarFFT(ArrayList<Double> coefficients){
+	public static List<Complex> aplicarFFT(ArrayList<Double> coefficients, int degree){
 		int n = coefficients.size();
-		int paddedSize = 1 << (int) Math.ceil(Math.log(n) / Math.log(2));//Tamaño de la FFT debe ser potencia de 2
+
+		int paddedSize = 1 << (int) Math.ceil(Math.log(degree) / Math.log(2));//Tamaño de la FFT debe ser potencia de 2
 
 		// Rellenar con ceros
 		for (int i = 0; i < paddedSize - n; i++) {
