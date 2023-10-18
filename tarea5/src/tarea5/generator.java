@@ -25,6 +25,12 @@ public class generator {
 		for(int i=0; i <= cant; i++) {
 			int num1 = (int)(Math.random()*30);
 			int num2 = (int)(Math.random()*30);
+			if(Math.random() < 0.5) {
+				num1 = -num1;
+			}
+			if(Math.random() < 0.5) {
+				num2 = -num2;
+			}
 			writer.write(num1 + " " + num2 + "\n");
 		}
 		writer.close();

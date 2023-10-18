@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,8 +36,10 @@ public class App {
 	}
 	
 	public static void metodoDirecto() throws IOException {
-		long timeStart = System.currentTimeMillis();
-		File file = new File("tarea5/input/10.txt");
+		Clock clock = Clock.systemDefaultZone();
+		Instant instant = clock.instant();
+		long timeStart = instant.getNano();
+		File file = new File("./input/input.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         String line = reader.readLine();
         
@@ -67,22 +71,30 @@ public class App {
         
         System.out.println("El polinomio resultante es:");
         System.out.println();
+        BufferedWriter writer = new BufferedWriter(new FileWriter("./output/outputDirect.txt"));
         for(int i=0 ; i < result.size() ; i++) {
         	if(result.get(i) != null) {
-            	System.out.print(result.get(i)+" ");
+        		int temp = result.get(i);
+            	System.out.print(temp+" ");
+    			writer.write(temp + "\n");
         	}
         }
+		writer.close();
         System.out.println();
         System.out.println();
-        
-		long timeEnd = System.currentTimeMillis();
-		System.out.println("El tiempo tomado en milisegundos fue de: " + ((timeEnd - timeStart)));
+
+		instant = clock.instant();
+		long timeEnd = instant.getNano();
+		System.out.println("El tiempo tomado en nanosegundos fue de: " + ((timeEnd - timeStart)));
 	}
 	
 	public static void metodoFFT() throws IOException {
 
-		long timeStart = System.currentTimeMillis();
-		File file = new File("tarea5/input/10.txt");//cambiar
+		Clock clock = Clock.systemDefaultZone();
+		Instant instant = clock.instant();
+		long timeStart = instant.getNano();
+		
+		File file = new File("./input/input.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         String line = reader.readLine();
 
@@ -112,18 +124,17 @@ public class App {
 		pol3=ifft(pol3FFT);
 
 		//imprimir la transformada
+        BufferedWriter writer = new BufferedWriter(new FileWriter("./output/outputComplex.txt"));
 		for (int i = 0; i < pol3.size(); i++) {
 			int temp=(int) Math.round(pol3.get(i).real());
 			System.out.print(temp+" ");
-			
+			writer.write(temp + "\n");
 		}
-
-
-
+		writer.close();
     
-        
-		long timeEnd = System.currentTimeMillis();
-		System.out.println("\nEl tiempo tomado en milisegundos fue de: " + ((timeEnd - timeStart)));
+		instant = clock.instant();
+		long timeEnd = instant.getNano();
+		System.out.println("\nEl tiempo tomado en nanosegundos fue de: " + ((timeEnd - timeStart)));
 	}
 	public static List<Complex> aplicarFFT(ArrayList<Double> coefficients, int degree){
 		int n = coefficients.size();
