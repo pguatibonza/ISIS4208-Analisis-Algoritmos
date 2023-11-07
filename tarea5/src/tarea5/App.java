@@ -89,12 +89,10 @@ public class App {
 	}
 	
 	public static void metodoFFT() throws IOException {
-
 		Clock clock = Clock.systemDefaultZone();
 		Instant instant = clock.instant();
 		long timeStart = instant.getNano();
-		
-		File file = new File("./input/input.txt");
+		File file = new File("./input/input.txt");//cambiar
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         String line = reader.readLine();
 
@@ -125,7 +123,7 @@ public class App {
 
 		//imprimir la transformada
         BufferedWriter writer = new BufferedWriter(new FileWriter("./output/outputComplex.txt"));
-		for (int i = 0; i < pol3.size(); i++) {
+		for (int i = 0; i < degree; i++) {
 			int temp=(int) Math.round(pol3.get(i).real());
 			System.out.print(temp+" ");
 			writer.write(temp + "\n");
