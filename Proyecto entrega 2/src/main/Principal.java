@@ -50,6 +50,21 @@ public class Principal {
 		DEMANDA[2][4] = 40;
 		DEMANDA[3][0] = 15;
 		DEMANDA[3][2] = 50;
+
+		//Imprimir floyd warshall
+		// System.out.println("Warshall");
+		// ArrayList<ArrayList<ArrayList<Nodo>>>  paths=GRAFO.floydWarshallWithPath();
+		// for (int i=0; i<paths.size(); i++){
+		// 	for (int j=0; j<paths.get(i).size(); j++){
+		// 		System.out.print("["+i+","+j+"]");
+		// 		for (int k=0; k<paths.get(i).get(j).size(); k++){
+		// 			System.out.print("->"+paths.get(i).get(j).get(k).darId());
+		// 		}
+		// 		System.out.println();
+		// 	}
+		// 	System.out.println();
+		// }
+
 		
 		System.out.println("DEMANDA INICIAL");
 		for (int i = 0; i < VERTICES; i++) {
@@ -59,7 +74,7 @@ public class Principal {
 			System.out.println();
 		}
 		//ourAlgorithm(RANDOM_TRIES, VERTICES, GRAFO, DEMANDA);
-		documentAlgorithmInit(GRAFO, DEMANDA, 4, 0, VERTICES-1);
+		DocumentAlgorithm.init(GRAFO, DEMANDA, 4);
 	}
 
 	public static void ourAlgorithm(int RandomTries, int vertices, Grafo grafo, int[][] demanda) {
@@ -186,98 +201,6 @@ public class Principal {
 			}
 			System.out.println();
 		}
-	}
-	
-	public static void documentAlgorithmInit(Grafo grafo, int[][] demanda, int numberRoutes, int minNode, int maxNode){
-		//Create a list with all shortest paths
-		// PENDING
-		//Calculate total demand
-		int totalDemand = 0;
-		for(int i = 0; i < VERTICES; i++) {
-			for (int j = 0; j < VERTICES; j++) {
-				totalDemand += demanda[i][j];
-			}
-		}
-		//Calculate edge usage
-		int[][] edgeUsage = new int[VERTICES][VERTICES];
-		int totalEdge = 0;
-		for(int i = 0; i < VERTICES; i++) {
-			for (int j = 0; j < VERTICES; j++) {
-				Nodo nodo1 = grafo.getNodo(i);
-				Nodo nodo2 = grafo.getNodo(j);
-				if(nodo1.isConnected(nodo2))
-				{
-					edgeUsage[i][j] += demanda[i][j];
-					edgeUsage[j][i] += demanda[i][j];
-					totalEdge += demanda[i][j]*2;
-				}
-			}
-		}
-		
-		System.out.println("edge usage");
-		for (int i = 0; i < VERTICES; i++) {
-			for (int j = 0; j < VERTICES; j++) {
-				System.out.print(edgeUsage[i][j]+",");
-			}
-			System.out.println();
-		}
-		
-		//Calculate usage probability
-		float[][] usageProbability = new float[VERTICES][VERTICES];
-		for(int i = 0; i < VERTICES; i++) {
-			for (int j = 0; j < VERTICES; j++) {
-				Nodo nodo1 = grafo.getNodo(i);
-				Nodo nodo2 = grafo.getNodo(j);
-				if(nodo1.isConnected(nodo2))
-				{
-					usageProbability[i][j] += ((float)(edgeUsage[i][j])/totalEdge);
-				}
-			}
-		}
-		
-		System.out.println("edge probability");
-		for (int i = 0; i < VERTICES; i++) {
-			for (int j = 0; j < VERTICES; j++) {
-				System.out.print(usageProbability[i][j]+",");
-			}
-			System.out.println();
-		}
-		
-		//Final
-		int end=0;
-		while(end != numberRoutes+100) {
-			//random edge
-			float prob=0;
-			double rand = Math.random();
-			boolean found = false;
-			String randomEdge = "";
-			for (int i = 0; i < VERTICES && !found; i++) {
-				for (int j = 0; j < VERTICES && !found; j++) {
-					if(usageProbability[i][j] != 0) {
-						prob += usageProbability[i][j];
-						if(prob >= rand) {
-							found = true;
-							randomEdge = i+","+j;
-						}
-					}
-				}
-			}
-			System.out.println("edge selected: " + randomEdge);
-			//random node
-			int randomNode = (int)(Math.random()*VERTICES);
-			System.out.println("node selected: " + randomNode);
-			int end2 = -1;
-			while(end2 != randomNode) {
-				// FALTA EXTEND ROUTE
-			}
-			//FALTA NEW ROUTE
-			end ++;
-		}
-		
-	}
-	
-	public static void documentAlgorithm(){
-		 
 	}
 }
 
