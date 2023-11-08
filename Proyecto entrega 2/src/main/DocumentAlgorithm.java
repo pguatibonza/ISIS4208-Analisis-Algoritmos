@@ -91,8 +91,24 @@ public class DocumentAlgorithm {
 			int randomNode = (int)(Math.random()*vertices);
 			System.out.println("node selected: " + randomNode);
 			int end2 = -1;
+            ArrayList<int[]> route=new ArrayList<int[]>();
+            route.add(randomEdge);
+            int [] edge_route=new int[2];
 			while(end2 != randomNode) {
-				// FALTA EXTEND ROUTE
+                
+
+                 rand=Math.random();
+                //add route to the beginning
+                if (rand>0.5){
+                    
+                }
+                //add route to the end
+                else{
+
+
+                }
+                end2++;
+                
 
 			}
 			//FALTA NEW ROUTE
