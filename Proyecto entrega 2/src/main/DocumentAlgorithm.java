@@ -8,22 +8,10 @@ import java.util.List;
  * DocumentAlgorithm
  */
 public class DocumentAlgorithm {
-	public static ArrayList<ArrayList<Integer>> mainAlgorithm(Grafo graph, int[][] demand, int numberRoutes,int edgeSize) {
-		//initialize the algorithm
-		ArrayList<ArrayList<Integer>> CSS = init(graph, demand, numberRoutes, edgeSize);
 
-		int sc=evaluate(CSS,demand,graph.getNodos().size());
-		return CSS;
-	}
 
-    private static int evaluate(ArrayList<ArrayList<Integer>> CSS,int[][] demand, int n ) {
-		int A=1;
-		int B=1;
 
-		return 0;
-	}
-
-	public static ArrayList<ArrayList<Integer>> init(Grafo graph, int[][] demand, int numberRoutes,int edgeSize){
+	public static ArrayList<ArrayList<Integer>> init(Grafo graph, int[][] demand, int numberRoutes,int minNode,int maxNode){
         int vertices=graph.getNodos().size();
 		//Create a list with all shortest paths
 		//Calculate total demand
