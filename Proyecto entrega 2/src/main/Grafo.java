@@ -9,6 +9,7 @@ import java.util.Set;
 public class Grafo {
 
     private Set<Nodo> nodos = new HashSet<>();
+    private int[][] distancias;
     
     public void agregarNodo(Nodo pNodo) {
         nodos.add(pNodo);
@@ -26,6 +27,13 @@ public class Grafo {
     	}
     	return null;
     }
+    public void setDistancias(int[][] pDistancias) {
+    	distancias = pDistancias;
+    }
+    public int[][] getDistancias(){
+    	return distancias;
+    }
+
     public ArrayList<ArrayList<ArrayList<Nodo>>> floydWarshallWithPath() {
         int n = nodos.size();
         int[][] dist = new int[n][n];
@@ -66,6 +74,7 @@ public class Grafo {
                 }
             }
         }
+        setDistancias(dist);
 
         // Reconstruye los caminos más cortos
         ArrayList<ArrayList<ArrayList<Nodo>>> shortestPaths = new ArrayList<>();

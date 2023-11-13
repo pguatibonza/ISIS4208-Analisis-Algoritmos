@@ -8,8 +8,23 @@ import java.util.List;
  * DocumentAlgorithm
  */
 public class DocumentAlgorithm {
+	public static ArrayList<ArrayList<Integer>> mainAlgorithm(Grafo graph, int[][] demand, int numberRoutes,int edgeSize) {
+		//initialize the algorithm
+		ArrayList<ArrayList<Integer>> CSS = init(graph, demand, numberRoutes, edgeSize);
 
-    public static ArrayList<ArrayList<Integer>> init(Grafo graph, int[][] demand, int numberRoutes, int minNode, int maxNode){
+		int sc=evaluate(CSS,demand,graph.getNodos().size());
+		return CSS;
+	}
+
+    private static int evaluate(ArrayList<ArrayList<Integer>> CSS,int[][] demand, int n ) {
+		int A=1;
+		int B=1;
+
+		return 0;
+	}
+
+	public static ArrayList<ArrayList<Integer>> init(Grafo graph, int[][] demand, int numberRoutes,int edgeSize){
+        int vertices=graph.getNodos().size();
 		//Create a list with all shortest paths
 		//Calculate total demand
 
@@ -79,9 +94,8 @@ public class DocumentAlgorithm {
 		ArrayList<ArrayList<Integer>> solutionList = new ArrayList<ArrayList<Integer>>();
 		//Final
 		int end=0;
-		while(end != numberRoutes) {
-			
-			
+		
+		while(end != numberRoutes  ) {
 			//selected nodes
 			boolean[] selectedNodes = new boolean[maxNode];
 			//selected edges
@@ -108,7 +122,7 @@ public class DocumentAlgorithm {
 			//random node
 			int randomNode = (int)(Math.random()*maxNode);
 			System.out.println("node selected: " + randomNode);
-			int end2 = -1;
+			int end2 = 0;
 
 			//first element route
             ArrayList<Integer> route=new ArrayList<>();
@@ -122,18 +136,17 @@ public class DocumentAlgorithm {
 			selectedEdges[randomEdge[0]][randomEdge[1]] = true;
 			selectedEdges[randomEdge[1]][randomEdge[0]] = true;
 
-
-			while(end2 != randomNode) {
+			int counter=0;
+			while(end2 != randomNode  )   {
                 
 				int[] highestUsageEdge= new int[2];
 				//The edge with the highest usage statistics among the candidate edges is selected as the new edge
 				for (MatrixElement usageEdge : matrixList) {
 
 					if (!selectedEdges[usageEdge.i][usageEdge.j]){
-						randomEdge[0]=usageEdge.i;
-						randomEdge[1]=usageEdge.j;
 						highestUsageEdge[0]=usageEdge.i;
 						highestUsageEdge[1]=usageEdge.j;
+
 						break;
 					}
 				}
@@ -143,8 +156,17 @@ public class DocumentAlgorithm {
 					ArrayList<Integer> tempRoute=new ArrayList<>();
 
 					ArrayList<Nodo> shortestPath=SPList.get(highestUsageEdge[1]).get(route.get(0));
+					tempRoute.add(highestUsageEdge[0]);
+					selectedNodes[highestUsageEdge[0]]=true;
+					
 					for (int i = 0; i < shortestPath.size(); i++) {
-						tempRoute.add(shortestPath.get(i).darId() );
+						int id= shortestPath.get(i).darId();
+						tempRoute.add(id );
+						selectedNodes[id]=true;
+
+						selectedEdges[id][tempRoute.get(tempRoute.size()-2)]=true;
+						selectedEdges[tempRoute.get(tempRoute.size()-2)][id]=true;
+						counter+=2;
 					}
 					for (int i = 1; i < route.size(); i++) {
 						tempRoute.add(route.get(i));
@@ -156,7 +178,15 @@ public class DocumentAlgorithm {
 					
 					ArrayList<Nodo> shortestPath=SPList.get(route.get(route.size()-1)).get(highestUsageEdge[0]);
 					for (int i = 1; i < shortestPath.size(); i++) {
-						route.add(shortestPath.get(i).darId() );
+						int id= shortestPath.get(i).darId();
+						route.add(id );
+						selectedNodes[id]=true;
+
+
+						selectedEdges[id][route.get(route.size()-2)]=true;
+						selectedEdges[route.get(route.size()-2)][id]=true;
+						counter+=2;
+						
 					}
 					route.add(highestUsageEdge[1]);
                 }
@@ -164,7 +194,6 @@ public class DocumentAlgorithm {
 			}
 			solutionList.add(route);
 
-			//FALTA NEW ROUTE
 			end ++;
 		}
 
