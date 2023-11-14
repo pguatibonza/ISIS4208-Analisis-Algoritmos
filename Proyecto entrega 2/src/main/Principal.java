@@ -74,7 +74,7 @@ public class Principal {
 			System.out.println();
 		}
 		//ourAlgorithm(RANDOM_TRIES, VERTICES, GRAFO, DEMANDA);
-		ArrayList<ArrayList<Integer>> initialSolution=DocumentAlgorithm.mainAlgorithm(GRAFO, DEMANDA, 4,0,VERTICES-1,80);
+		ArrayList<ArrayList<Integer>> initialSolution=DocumentAlgorithm.mainAlgorithm(GRAFO, DEMANDA, 4,0,VERTICES,80);
 		System.out.println("SOLUCION INICIAL");
 		for (int i = 0; i < initialSolution.size(); i++) {
 			for (int j = 0; j < initialSolution.get(i).size(); j++) {
