@@ -241,9 +241,25 @@ public class DocumentAlgorithm {
     		}
     	}
     	
+    	int[][] transbordos = new int[demand[0].length][demand[0].length];
+    	
+    	for(int i=0 ; i<demand[0].length ; i++) {
+    		for(int j=0 ; j<demand[0].length ; j++) {
+    			transbordos[i][j] = demand[i][j];
+        	}
+    	}
+    	
+    	for(ArrayList<Integer> ruta : css) {
+    		for(int i=0 ; i<ruta.size() ; i++) {
+    			for(int j=i ; j<ruta.size() ; j++) {
+    				transbordos[i][j] = 0;
+    			}
+    		}
+    	}
+    	
     	for(ArrayList<Integer> route: css) {
     		for(int i=0 ; i<route.size()-1 ; i++) {
-    			scoreB += demand[i][i+1];// Definir transfer
+    			scoreB += demand[i][i+1]*transbordos[i][i+1];
     		}
     	}
 
