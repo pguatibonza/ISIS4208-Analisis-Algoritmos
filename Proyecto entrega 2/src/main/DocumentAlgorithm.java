@@ -11,6 +11,40 @@ public class DocumentAlgorithm {
 
 
 
+
+    
+    public static ArrayList<ArrayList<Integer>> mainAlgorithm(Grafo graph, int[][] demand, int numberRoutes, int minNode, int maxNode, int targetScore){
+    	
+    	int A = 10; //Definir bien esta constante
+    	int B = 10; //Definir bien esta constante
+    	
+    	ArrayList<ArrayList<Integer>> css = init(graph, demand, numberRoutes, minNode, maxNode);
+
+		System.out.println(css);
+		for(ArrayList<Integer> route : css) {
+			for(int i=0 ; i<(route.size()-1); i++) {
+				for(int j=i+1 ; j<route.size() ; j++) {
+					if(route.get(i) == route.get(j)) {
+						route.remove(j);
+					}
+				}
+			}
+		}
+		System.out.println(css);
+    	int sc = evaluate(A, B, css, graph, demand);
+    	int sn = 0;
+    	
+    	while(sc <= targetScore) {
+    		ArrayList<ArrayList<Integer>> possibleCSS = modifyRoute(css, graph, minNode, maxNode, numberRoutes);
+    		if(isProper(possibleCSS, numberRoutes,minNode,maxNode)) {
+    			sn = evaluate(A, B, possibleCSS, graph, demand);
+    		}
+    		css = HC(A, B, css, possibleCSS, graph, demand, sc, minNode, maxNode);
+    		sc = evaluate(A, B, css, graph, demand);
+    	}
+    	return css;
+    	
+    }
 	public static ArrayList<ArrayList<Integer>> init(Grafo graph, int[][] demand, int numberRoutes,int minNode,int maxNode){
         int vertices=graph.getNodos().size();
 		//Create a list with all shortest paths
@@ -189,45 +223,11 @@ public class DocumentAlgorithm {
 		
 	}
     
-    public static ArrayList<ArrayList<Integer>> mainAlgorithm(Grafo graph, int[][] demand, int numberRoutes, int minNode, int maxNode, int targetScore){
-    	
-    	int A = 10; //Definir bien esta constante
-    	int B = 10; //Definir bien esta constante
-    	
-    	ArrayList<ArrayList<Integer>> css = init(graph, demand, numberRoutes, minNode, maxNode);
-
-		System.out.println(css);
-		for(ArrayList<Integer> route : css) {
-			for(int i=0 ; i<(route.size()-1); i++) {
-				System.out.println(i);
-				for(int j=i+1 ; j<route.size() ; j++) {
-					if(route.get(i) == route.get(j)) {
-						route.remove(j);
-					}
-				}
-			}
-		}
-		System.out.println(css);
-    	int sc = evaluate(A, B, css, graph, demand);
-    	int sn = 0;
-    	
-    	while(sc != targetScore) {
-    		ArrayList<ArrayList<Integer>> possibleCSS = modifyRoute(css, graph, minNode, maxNode, numberRoutes);
-    		if(isProper(possibleCSS, numberRoutes)) {
-    			sn = evaluate(A, B, possibleCSS, graph, demand);
-    		}
-    		css = HC(A, B, css, possibleCSS, graph, demand, sc, minNode, maxNode);
-    		sc = evaluate(A, B, css, graph, demand);
-    	}
-    	return css;
-    	
-    }
-    
     public static ArrayList<ArrayList<Integer>> HC(int A, int B, ArrayList<ArrayList<Integer>> css, ArrayList<ArrayList<Integer>> possibleCSS, Grafo graph, int[][] demand, int O2, int minNode, int maxNode){
     	int O2css = evaluate(A, B, possibleCSS, graph, demand);
     	int better = O2css;
-    	ArrayList<ArrayList<Integer>> copy = null;
-    	while(better >= O2css) {
+    	ArrayList<ArrayList<Integer>> copy = css;
+    	while(better > O2css) {
     		copy = css;
     		for(int i=0 ; i<copy.size() ; i++) {
     			for (int j = 0; j < copy.get(i).size(); j++) {
@@ -249,7 +249,7 @@ public class DocumentAlgorithm {
     	int scoreB = 0;
     	
     	for(ArrayList<Integer> route: css) {
-    		for(int i=0 ; i<(route.size()-1) ; i++) {
+    		for(int i=0 ; i<(route.size()- 1) ; i++) {
     			scoreA += demand[route.get(i)][route.get(i+1)]*graph.getNodo(route.get(i)).darCostoRuta(graph.getNodo(route.get(i+1)));
     		}
     	}
@@ -282,7 +282,7 @@ public class DocumentAlgorithm {
     	return (scoreA + scoreB);
     }
     
-    public static boolean isProper(ArrayList<ArrayList<Integer>> css, int numberRoutes) {
+    public static boolean isProper(ArrayList<ArrayList<Integer>> css, int numberRoutes,int minNode,int maxNode) {
     	//No backtracking check
     	for(ArrayList<Integer> route : css) {
     		ArrayList<Integer> alreadyVisited = new ArrayList<Integer>();
@@ -296,14 +296,11 @@ public class DocumentAlgorithm {
 				alreadyVisited.add(station);
 			}
 		}
-    	//PENDING Each route must connect with one or more routes in
-    	//the route set. This constraint guarantees that all the
-    	//nodes in the route network are connected.
     	
     	//No exceed max number of stations in a route
     	for(ArrayList<Integer> route : css) {
     		int count = route.size();
-			if(count > numberRoutes) {
+			if(count < minNode || count > maxNode) {
 				return false;
 			}
 		}

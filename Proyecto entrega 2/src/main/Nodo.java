@@ -29,6 +29,9 @@ public class Nodo {
     }
     
     public int darCostoRuta(Nodo nodo) {
+        if (nodosAdyacentes.get(nodo) == null) {
+            return 0;
+        }
     	return nodosAdyacentes.get(nodo);
     }
  
