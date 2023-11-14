@@ -195,7 +195,19 @@ public class DocumentAlgorithm {
     	int B = 10; //Definir bien esta constante
     	
     	ArrayList<ArrayList<Integer>> css = init(graph, demand, numberRoutes, minNode, maxNode);
-    	
+
+		System.out.println(css);
+		for(ArrayList<Integer> route : css) {
+			for(int i=0 ; i<(route.size()-1); i++) {
+				System.out.println(i);
+				for(int j=i+1 ; j<route.size() ; j++) {
+					if(route.get(i) == route.get(j)) {
+						route.remove(j);
+					}
+				}
+			}
+		}
+		System.out.println(css);
     	int sc = evaluate(A, B, css, graph, demand);
     	int sn = 0;
     	
@@ -205,6 +217,7 @@ public class DocumentAlgorithm {
     			sn = evaluate(A, B, possibleCSS, graph, demand);
     		}
     		css = HC(A, B, css, possibleCSS, graph, demand, sc, minNode, maxNode);
+    		sc = evaluate(A, B, css, graph, demand);
     	}
     	return css;
     	
@@ -236,8 +249,8 @@ public class DocumentAlgorithm {
     	int scoreB = 0;
     	
     	for(ArrayList<Integer> route: css) {
-    		for(int i=0 ; i<route.size()-1 ; i++) {
-    			scoreA += demand[i][i+1]*graph.getNodo(i).darCostoRuta(graph.getNodo(i+1));
+    		for(int i=0 ; i<(route.size()-1) ; i++) {
+    			scoreA += demand[route.get(i)][route.get(i+1)]*graph.getNodo(route.get(i)).darCostoRuta(graph.getNodo(route.get(i+1)));
     		}
     	}
     	
@@ -252,14 +265,14 @@ public class DocumentAlgorithm {
     	for(ArrayList<Integer> ruta : css) {
     		for(int i=0 ; i<ruta.size() ; i++) {
     			for(int j=i ; j<ruta.size() ; j++) {
-    				transbordos[i][j] = 0;
+    				transbordos[ruta.get(i)][ruta.get(j)] = 0;
     			}
     		}
     	}
     	
     	for(ArrayList<Integer> route: css) {
     		for(int i=0 ; i<route.size()-1 ; i++) {
-    			scoreB += demand[i][i+1]*transbordos[i][i+1];
+    			scoreB += demand[route.get(i)][route.get(i+1)]*transbordos[route.get(i)][route.get(i+1)];
     		}
     	}
 
@@ -303,7 +316,7 @@ public class DocumentAlgorithm {
     	int cost = 0;
     	for(ArrayList<Integer> route: css) {
     		for(int i=0 ; i<route.size()-1 ; i++) {
-    			cost += graph.getNodo(i).darCostoRuta(graph.getNodo(i+1));
+    			cost += graph.getNodo(route.get(i)).darCostoRuta(graph.getNodo(route.get(i+1)));
     		}
     	}
 		//Select node not in route
@@ -319,34 +332,42 @@ public class DocumentAlgorithm {
     				cant ++;
     			}
     		}
-    		double proportion = 1/cant;
-    		double rand = Math.random();
-    		int selectedNode = 0;
-    		boolean flag = true;
-    		for(int i=0 ; i<selected.length && flag ; i++) {
-    			if(selected[i] == 0 && proportion > rand) {
-    				selectedNode=i;
-    				flag = false;
-    			}
-    			else {
-    				proportion += proportion;
-    			}
+    		if(cant != 0) {
+        		double proportion = 1/cant;
+    			double rand = Math.random();
+        		int selectedNode = 0;
+        		boolean flag = true;
+        		for(int i=0 ; i<selected.length && flag ; i++) {
+        			if(selected[i] == 0 && proportion > rand) {
+        				selectedNode=i;
+        				flag = false;
+        			}
+        			else {
+        				proportion += proportion;
+        			}
+        		}
+        		/*
+        		for(int i=0 ; i<route.size() ; i++) {
+        			ArrayList<Integer> newRoute = route;
+        			newRoute.set(i, selectedNode);
+        			System.out.println(route);
+        			System.out.println(newRoute+"a");
+        			int newCost = 0;
+        	    	for(int j=0 ; j<(newRoute.size()-1) ; j++) {
+        	    		System.out.println(j);
+        	    		newCost += graph.getNodo(newRoute.get(j)).darCostoRuta(graph.getNodo(newRoute.get(j+1)));
+        	    	}
+        	    	if(newCost < cost) {
+        	    		modifiedRoute.set(actualRoute, newRoute);
+        	    	}
+        		}
+        		*/
+        		actualRoute ++;
     		}
     		
-    		for(int i=0 ; i<route.size() ; i++) {
-    			ArrayList<Integer> newRoute = route;
-    			newRoute.add(i, selectedNode);
-    			int newCost = 0;
-    	    	for(int j=0 ; j<newRoute.size()-1 ; j++) {
-    	    		newCost += graph.getNodo(j).darCostoRuta(graph.getNodo(i+1));
-    	    	}
-    	    	if(newCost < cost) {
-    	    		modifiedRoute.set(actualRoute, newRoute);
-    	    	}
-    		}
-    		actualRoute ++;
     	}
     	actualRoute = 0;
+    	/*
     	for(ArrayList<Integer> route : modifiedRoute) {
         	int count = route.size();
     		while(count > numberRoutes) {
@@ -356,6 +377,7 @@ public class DocumentAlgorithm {
     		modifiedRoute.set(actualRoute, route);
         	actualRoute ++;
     	}
+		*/
     	return modifiedRoute;
     }
 }
