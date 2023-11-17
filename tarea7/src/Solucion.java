@@ -16,7 +16,6 @@ public class Solucion {
         Graph graph = new Graph();
         while(line.length()>1){
             String numbers[] = line.split("\\s+"); // \\s+ es para que tome cualquier cantidad de espacios. No se usa \t porque no funcionó 
-            System.out.println(numbers[0]+" "+numbers[1]);
             int a = Integer.parseInt(numbers[0]);
             int b = Integer.parseInt(numbers[1]);
             graph.addEdge(a, b);

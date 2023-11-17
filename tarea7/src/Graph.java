@@ -48,24 +48,45 @@ public class Graph {
                 coveredVertices.add(randomVertex);
                 coveredVertices.add(randomVertex2);
 
-                // Descartar ejes de los vertices escogidos
-                list.remove(Integer.valueOf(randomVertex)); // Eliminar conexión desde randomVertex2
-                if (list.isEmpty()) {
-                    adjacencyList.remove(randomVertex);
-                }
-
                 // Actualizar la conexión inversa (no dirigida)
                 for(Integer vertex: list){
                     List<Integer> list2 = adjacencyList.get(vertex);
-                    list2.remove(Integer.valueOf(randomVertex));
-                    
-                    if (list2.isEmpty()) {
-                        adjacencyList.remove(vertex);
+                    if(list2!=null){
+                        if (list2.isEmpty()) {
+                            adjacencyList.remove(vertex);
+                        }
+                        else{
+                            int index=list2.indexOf(randomVertex);
+                            list2.remove(index);
+                            adjacencyList.put(vertex, list2);
+                        }
+
                     }
-                    else{
-                        adjacencyList.put(vertex, list2);
+                    
+                }
+                list=adjacencyList.get(randomVertex2);
+                for(Integer vertex: list){
+                    List<Integer> list2 = adjacencyList.get(vertex);
+                    if(list2!=null){
+                        if (list2.isEmpty()) {
+                            adjacencyList.remove(vertex);
+                        }
+                        else{
+                            int index=list2.indexOf(randomVertex2);
+                            list2.remove(index);
+                            adjacencyList.put(vertex, list2);
+                        }
+
                     }
                 }
+
+                // Descartar ejes de los vertices escogidos
+                adjacencyList.remove(randomVertex);
+                adjacencyList.remove(randomVertex2);
+
+                
+
+                
             }
         }
 
