@@ -29,7 +29,7 @@ public class Graph {
     }
 
     public Set<Integer> firstAlgorithm() {
-        
+
         Set<Integer> coveredVertices = new HashSet<>();
 
         while (!adjacencyList.isEmpty()) {
@@ -49,52 +49,45 @@ public class Graph {
                 coveredVertices.add(randomVertex2);
 
                 // Actualizar la conexión inversa (no dirigida)
-                for(Integer vertex: list){
+                for (Integer vertex : list) {
                     List<Integer> list2 = adjacencyList.get(vertex);
-                    if(list2!=null){
+                    if (list2 != null) {
                         if (!list2.isEmpty()) {
-                            int index=list2.indexOf(randomVertex);
+                            int index = list2.indexOf(randomVertex);
                             list2.remove(index);
                             adjacencyList.put(vertex, list2);
-                           
-                        }
-                        else{
+
+                        } else {
                             adjacencyList.remove(vertex);
-                            
+
                         }
 
                     }
-                    
+
                 }
-                list=adjacencyList.get(randomVertex2);
-                if(list!=null){
-                    for(Integer vertex: list){
+                list = adjacencyList.get(randomVertex2);
+                if (list != null) {
+                    for (Integer vertex : list) {
                         List<Integer> list2 = adjacencyList.get(vertex);
-                        if(list2!=null){
+                        if (list2 != null) {
                             if (!list2.isEmpty()) {
                                 adjacencyList.remove(vertex);
-                            }
-                            else{
-                                int index=list2.indexOf(randomVertex2);
+                            } else {
+                                int index = list2.indexOf(randomVertex2);
                                 list2.remove(index);
                                 adjacencyList.put(vertex, list2);
                             }
-    
+
                         }
                     }
 
                 }
-                
 
                 // Descartar ejes de los vertices escogidos
                 adjacencyList.remove(randomVertex);
                 adjacencyList.remove(randomVertex2);
 
-                
-
-                
-            }
-            else{
+            } else {
                 adjacencyList.remove(randomVertex);
             }
         }
@@ -108,6 +101,9 @@ public class Graph {
         while (!adjacencyList.isEmpty()) {
 
             // vertice de mayor grado
+            if (adjacencyList.isEmpty()) {
+                break;
+            }
             int maxDegreeVertex = adjacencyList.keySet().iterator().next();
             int maxDegree = 0;
             for (Integer vertex : adjacencyList.keySet()) {
@@ -119,22 +115,29 @@ public class Graph {
 
             // descartar ejes que llegan al vertice escogido
             adjacencyList.remove(maxDegreeVertex);
-            
+
             List<Integer> list = adjacencyList.get(maxDegreeVertex);
             // Eliminar conexión inversa (no dirigido)
-            for(Integer vertex: list){
-                List<Integer> list2 = adjacencyList.get(vertex);
-                list2.remove(Integer.valueOf(maxDegreeVertex));
-                
-                if (list2.isEmpty()) {
-                    adjacencyList.remove(vertex);
+            if (list != null) {
+                for (Integer vertex : list) {
+                    List<Integer> list2 = adjacencyList.get(vertex);
+                    if (list2 != null) {
+                        if (!list2.isEmpty()) {
+                            int index = list2.indexOf(maxDegreeVertex);
+                            list2.remove(index);
+                            adjacencyList.put(vertex, list2);
+
+                        } else {
+                            adjacencyList.remove(vertex);
+
+                        }
+                    }
+
                 }
-                else{
-                    adjacencyList.put(vertex, list2);
-                }
+
             }
 
-            //añadir vertice escogido
+            // añadir vertice escogido
             coveredVertices.add(maxDegreeVertex);
         }
         return coveredVertices;
@@ -155,15 +158,15 @@ public class Graph {
                 int randomIndex2 = random.nextInt(list.size());
                 int randomVertex2 = list.get(randomIndex2);
 
-                int degree=list.size();
-                int degree2=0;
+                int degree = list.size();
+                int degree2 = 0;
 
-                if (adjacencyList.containsKey(randomVertex2) && adjacencyList.get(randomVertex2)!=null) {
+                if (adjacencyList.containsKey(randomVertex2) && adjacencyList.get(randomVertex2) != null) {
                     degree2 = adjacencyList.get(randomVertex2).size();
                 }
 
-                int selectedVertex = degree2>degree?randomVertex2:randomVertex;
-                list=adjacencyList.get(selectedVertex);
+                int selectedVertex = degree2 > degree ? randomVertex2 : randomVertex;
+                list = adjacencyList.get(selectedVertex);
 
                 // Añadir vertice al conjunto coveredVertices
                 coveredVertices.add(selectedVertex);
@@ -173,24 +176,22 @@ public class Graph {
 
                 // Eliminar conexión inversa (no dirigido)
 
-                for(Integer vertex: list){
+                for (Integer vertex : list) {
                     List<Integer> list2 = adjacencyList.get(vertex);
-                    if(list2!=null){
+                    if (list2 != null) {
                         if (!list2.isEmpty()) {
-                            int index=list2.indexOf(selectedVertex);
+                            int index = list2.indexOf(selectedVertex);
                             list2.remove(index);
                             adjacencyList.put(vertex, list2);
-                           
-                        }
-                        else{
+
+                        } else {
                             adjacencyList.remove(vertex);
-                            
+
                         }
                     }
-                   
+
                 }
-            }
-            else{
+            } else {
                 adjacencyList.remove(randomVertex);
             }
         }
@@ -215,7 +216,7 @@ public class Graph {
 
                 // Seleccionar aleatoriamente uno de los dos vértices
                 int selectedVertex = random.nextBoolean() ? randomVertex : randomVertex2;
-                list=adjacencyList.get(selectedVertex);
+                list = adjacencyList.get(selectedVertex);
 
                 // Añadir vértice
                 coveredVertices.add(selectedVertex);
@@ -224,27 +225,25 @@ public class Graph {
                 adjacencyList.remove(selectedVertex);
 
                 // Eliminar conexión inversa (no dirigida)
-                for(Integer vertex: list){
+                for (Integer vertex : list) {
                     List<Integer> list2 = adjacencyList.get(vertex);
-                    if(list2!=null){
+                    if (list2 != null) {
                         if (!list2.isEmpty()) {
-                            int index=list2.indexOf(selectedVertex);
+                            int index = list2.indexOf(selectedVertex);
                             list2.remove(index);
                             adjacencyList.put(vertex, list2);
-                           
-                        }
-                        else{
+
+                        } else {
                             adjacencyList.remove(vertex);
-                            
+
                         }
                     }
-                   
+
                 }
-            }
-            else{
+            } else {
                 adjacencyList.remove(randomVertex);
             }
-        
+
         }
 
         return coveredVertices;
