@@ -55,10 +55,16 @@ public class Graph {
                 }
 
                 // Actualizar la conexión inversa (no dirigida)
-                List<Integer> list2 = adjacencyList.get(randomVertex2);
-                list2.remove(Integer.valueOf(randomVertex2)); // Eliminar conexión desde randomVertex
-                if (list2.isEmpty()) {
-                    adjacencyList.remove(randomVertex2);
+                for(Integer vertex: list){
+                    List<Integer> list2 = adjacencyList.get(vertex);
+                    list2.remove(Integer.valueOf(randomVertex));
+                    
+                    if (list2.isEmpty()) {
+                        adjacencyList.remove(vertex);
+                    }
+                    else{
+                        adjacencyList.put(vertex, list2);
+                    }
                 }
             }
         }
@@ -121,12 +127,19 @@ public class Graph {
                 int randomIndex2 = random.nextInt(list.size());
                 int randomVertex2 = list.get(randomIndex2);
 
-                // Añadir vértices al conjunto coveredVertices
-                coveredVertices.add(randomVertex);
-                coveredVertices.add(randomVertex2);
+                int degree=list.size();
+                int degree2=0;
+
+                if (adjacencyList.containsKey(randomVertex2)) {
+                    degree2 = adjacencyList.get(randomVertex2).size();
+                }
+                int selectedVertex = degree2>degree?randomVertex2:randomVertex;
+
+                // Añadir vertice al conjunto coveredVertices
+                coveredVertices.add(selectedVertex);
 
                 // Descartar ejes del vértice escogido
-                adjacencyList.remove(randomVertex);
+                adjacencyList.remove(selectedVertex);
 
                 // Eliminar conexión inversa (no dirigido)
                 list.remove(Integer.valueOf(randomVertex2));
@@ -156,6 +169,7 @@ public class Graph {
 
                 // Seleccionar aleatoriamente uno de los dos vértices
                 int selectedVertex = random.nextBoolean() ? randomVertex : randomVertex2;
+                list=adjacencyList.get(selectedVertex);
 
                 // Añadir vértice
                 coveredVertices.add(selectedVertex);
@@ -164,9 +178,16 @@ public class Graph {
                 adjacencyList.remove(selectedVertex);
 
                 // Eliminar conexión inversa (no dirigida)
-                list.remove(Integer.valueOf(selectedVertex));
-                if (list.isEmpty()) {
-                    adjacencyList.remove(randomVertex);
+                for(Integer vertex: list){
+                    List<Integer> list2 = adjacencyList.get(vertex);
+                    list2.remove(Integer.valueOf(randomVertex));
+                    adjacencyList.put(vertex, list2);
+                    if (list2.isEmpty()) {
+                        adjacencyList.remove(vertex);
+                    }
+                    else{
+                        adjacencyList.put(vertex, list2);
+                    }
                 }
             }
         }
