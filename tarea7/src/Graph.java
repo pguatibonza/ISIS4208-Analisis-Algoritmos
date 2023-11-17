@@ -161,6 +161,7 @@ public class Graph {
                 if (adjacencyList.containsKey(randomVertex2) && adjacencyList.get(randomVertex2)!=null) {
                     degree2 = adjacencyList.get(randomVertex2).size();
                 }
+
                 int selectedVertex = degree2>degree?randomVertex2:randomVertex;
                 list=adjacencyList.get(selectedVertex);
 
@@ -171,17 +172,26 @@ public class Graph {
                 adjacencyList.remove(selectedVertex);
 
                 // Eliminar conexión inversa (no dirigido)
+
                 for(Integer vertex: list){
                     List<Integer> list2 = adjacencyList.get(vertex);
-                    list2.remove(Integer.valueOf(randomVertex));
-                    
-                    if (list2.isEmpty()) {
-                        adjacencyList.remove(vertex);
+                    if(list2!=null){
+                        if (!list2.isEmpty()) {
+                            int index=list2.indexOf(selectedVertex);
+                            list2.remove(index);
+                            adjacencyList.put(vertex, list2);
+                           
+                        }
+                        else{
+                            adjacencyList.remove(vertex);
+                            
+                        }
                     }
-                    else{
-                        adjacencyList.put(vertex, list2);
-                    }
+                   
                 }
+            }
+            else{
+                adjacencyList.remove(randomVertex);
             }
         }
 
