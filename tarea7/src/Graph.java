@@ -52,33 +52,39 @@ public class Graph {
                 for(Integer vertex: list){
                     List<Integer> list2 = adjacencyList.get(vertex);
                     if(list2!=null){
-                        if (list2.isEmpty()) {
-                            adjacencyList.remove(vertex);
-                        }
-                        else{
+                        if (!list2.isEmpty()) {
                             int index=list2.indexOf(randomVertex);
                             list2.remove(index);
                             adjacencyList.put(vertex, list2);
+                           
+                        }
+                        else{
+                            adjacencyList.remove(vertex);
+                            
                         }
 
                     }
                     
                 }
                 list=adjacencyList.get(randomVertex2);
-                for(Integer vertex: list){
-                    List<Integer> list2 = adjacencyList.get(vertex);
-                    if(list2!=null){
-                        if (list2.isEmpty()) {
-                            adjacencyList.remove(vertex);
+                if(list!=null){
+                    for(Integer vertex: list){
+                        List<Integer> list2 = adjacencyList.get(vertex);
+                        if(list2!=null){
+                            if (!list2.isEmpty()) {
+                                adjacencyList.remove(vertex);
+                            }
+                            else{
+                                int index=list2.indexOf(randomVertex2);
+                                list2.remove(index);
+                                adjacencyList.put(vertex, list2);
+                            }
+    
                         }
-                        else{
-                            int index=list2.indexOf(randomVertex2);
-                            list2.remove(index);
-                            adjacencyList.put(vertex, list2);
-                        }
-
                     }
+
                 }
+                
 
                 // Descartar ejes de los vertices escogidos
                 adjacencyList.remove(randomVertex);
@@ -87,6 +93,9 @@ public class Graph {
                 
 
                 
+            }
+            else{
+                adjacencyList.remove(randomVertex);
             }
         }
 
@@ -207,16 +216,25 @@ public class Graph {
                 // Eliminar conexión inversa (no dirigida)
                 for(Integer vertex: list){
                     List<Integer> list2 = adjacencyList.get(vertex);
-                    list2.remove(Integer.valueOf(randomVertex));
-                    adjacencyList.put(vertex, list2);
-                    if (list2.isEmpty()) {
-                        adjacencyList.remove(vertex);
+                    if(list2!=null){
+                        if (!list2.isEmpty()) {
+                            int index=list2.indexOf(selectedVertex);
+                            list2.remove(index);
+                            adjacencyList.put(vertex, list2);
+                           
+                        }
+                        else{
+                            adjacencyList.remove(vertex);
+                            
+                        }
                     }
-                    else{
-                        adjacencyList.put(vertex, list2);
-                    }
+                   
                 }
             }
+            else{
+                adjacencyList.remove(randomVertex);
+            }
+        
         }
 
         return coveredVertices;
