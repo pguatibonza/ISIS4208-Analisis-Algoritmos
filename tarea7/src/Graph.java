@@ -130,10 +130,11 @@ public class Graph {
                 int degree=list.size();
                 int degree2=0;
 
-                if (adjacencyList.containsKey(randomVertex2)) {
+                if (adjacencyList.containsKey(randomVertex2) && adjacencyList.get(randomVertex2)!=null) {
                     degree2 = adjacencyList.get(randomVertex2).size();
                 }
                 int selectedVertex = degree2>degree?randomVertex2:randomVertex;
+                list=adjacencyList.get(selectedVertex);
 
                 // Añadir vertice al conjunto coveredVertices
                 coveredVertices.add(selectedVertex);
@@ -142,9 +143,16 @@ public class Graph {
                 adjacencyList.remove(selectedVertex);
 
                 // Eliminar conexión inversa (no dirigido)
-                list.remove(Integer.valueOf(randomVertex2));
-                if (list.isEmpty()) {
-                    adjacencyList.remove(randomVertex);
+                for(Integer vertex: list){
+                    List<Integer> list2 = adjacencyList.get(vertex);
+                    list2.remove(Integer.valueOf(randomVertex));
+                    
+                    if (list2.isEmpty()) {
+                        adjacencyList.remove(vertex);
+                    }
+                    else{
+                        adjacencyList.put(vertex, list2);
+                    }
                 }
             }
         }
