@@ -29,30 +29,40 @@ public class Graph {
     }
 
     public Set<Integer> firstAlgorithm() {
-
+        
         Set<Integer> coveredVertices = new HashSet<>();
+
         while (!adjacencyList.isEmpty()) {
             // Seleccionar eje aleatorio
-            List keys = new ArrayList<>(adjacencyList.keySet());
+            List<Integer> keys = new ArrayList<>(adjacencyList.keySet());
             Random random = new Random();
             int randomIndex = random.nextInt(keys.size());
-            int randomVertex = (int) keys.get(randomIndex);
-            List<Integer> list = adjacencyList.get(randomVertex);
+            int randomVertex = keys.get(randomIndex);
 
+            List<Integer> list = adjacencyList.get(randomVertex);
             if (list.size() > 0) {
-                int randomIndex2 = (int) (Math.random() * (list.size() - 1));
+                int randomIndex2 = random.nextInt(list.size());
                 int randomVertex2 = list.get(randomIndex2);
+
                 // Incluir vertices conectados
                 coveredVertices.add(randomVertex);
                 coveredVertices.add(randomVertex2);
 
                 // Descartar ejes de los vertices escogidos
-                adjacencyList.remove(randomVertex);
-                adjacencyList.remove(randomVertex2);
+                list.remove(Integer.valueOf(randomVertex)); // Eliminar conexión desde randomVertex2
+                if (list.isEmpty()) {
+                    adjacencyList.remove(randomVertex);
+                }
 
+                // Actualizar la conexión inversa (no dirigida)
+                List<Integer> list2 = adjacencyList.get(randomVertex2);
+                list2.remove(Integer.valueOf(randomVertex2)); // Eliminar conexión desde randomVertex
+                if (list2.isEmpty()) {
+                    adjacencyList.remove(randomVertex2);
+                }
             }
-
         }
+
         return coveredVertices;
 
     }
@@ -97,66 +107,70 @@ public class Graph {
     }
 
     public Set<Integer> thirdAlgorithm() {
-        Set<Integer> coveredVertices = new HashSet<Integer>();
+        Set<Integer> coveredVertices = new HashSet<>();
+
         while (!adjacencyList.isEmpty()) {
             // Seleccionar eje aleatorio
-            List keys = new ArrayList<>(adjacencyList.keySet());
+            List<Integer> keys = new ArrayList<>(adjacencyList.keySet());
             Random random = new Random();
             int randomIndex = random.nextInt(keys.size());
-            int randomVertex = (int) keys.get(randomIndex);
+            int randomVertex = keys.get(randomIndex);
+
             List<Integer> list = adjacencyList.get(randomVertex);
             if (list.size() > 0) {
-                int randomIndex2 = (int) (Math.random() * (list.size() - 1));
+                int randomIndex2 = random.nextInt(list.size());
                 int randomVertex2 = list.get(randomIndex2);
-                // Vertice de mayor grado entre los seleccionados
-                int maxDegreeVertex = randomVertex;
-                int size2=0;
-                if (adjacencyList.get(randomVertex2) != null) {
-                    size2 = adjacencyList.get(randomVertex2).size();
-                }
-                if (size2> list.size()) {
-                    maxDegreeVertex = randomVertex2;
-                }
 
-                // añadir vertice
-                coveredVertices.add(maxDegreeVertex);
+                // Añadir vértices al conjunto coveredVertices
+                coveredVertices.add(randomVertex);
+                coveredVertices.add(randomVertex2);
 
-                // Descartar ejes del vertice escogido
-                adjacencyList.remove(maxDegreeVertex);
+                // Descartar ejes del vértice escogido
+                adjacencyList.remove(randomVertex);
+
+                // Eliminar conexión inversa (no dirigido)
+                list.remove(Integer.valueOf(randomVertex2));
+                if (list.isEmpty()) {
+                    adjacencyList.remove(randomVertex);
+                }
             }
-
         }
 
         return coveredVertices;
     }
 
     public Set<Integer> fourthAlgorithm() {
-        Set<Integer> coveredVertices = new HashSet<Integer>();
+        Set<Integer> coveredVertices = new HashSet<>();
 
-        while(!adjacencyList.isEmpty()){
+        while (!adjacencyList.isEmpty()) {
             // Seleccionar eje aleatorio
-            List keys = new ArrayList<>(adjacencyList.keySet());
+            List<Integer> keys = new ArrayList<>(adjacencyList.keySet());
             Random random = new Random();
             int randomIndex = random.nextInt(keys.size());
-            int randomVertex = (int) keys.get(randomIndex);
+            int randomVertex = keys.get(randomIndex);
+
             List<Integer> list = adjacencyList.get(randomVertex);
             if (list.size() > 0) {
-                int randomIndex2 = (int) (Math.random() * (list.size() - 1));
+                int randomIndex2 = random.nextInt(list.size());
                 int randomVertex2 = list.get(randomIndex2);
 
-                //vertice aleatorio entre los seleccionados
-                int selectedVertex=randomVertex;
-                if(random.nextBoolean()){
-                    selectedVertex=randomVertex2;
-                }
-                //Añadir vertice
+                // Seleccionar aleatoriamente uno de los dos vértices
+                int selectedVertex = random.nextBoolean() ? randomVertex : randomVertex2;
+
+                // Añadir vértice
                 coveredVertices.add(selectedVertex);
 
-                //Descartar ejes conectados por el vertice escogido
+                // Descartar ejes conectados por el vértice escogido
                 adjacencyList.remove(selectedVertex);
-            }
 
+                // Eliminar conexión inversa (no dirigida)
+                list.remove(Integer.valueOf(selectedVertex));
+                if (list.isEmpty()) {
+                    adjacencyList.remove(randomVertex);
+                }
+            }
         }
+
         return coveredVertices;
     }
 

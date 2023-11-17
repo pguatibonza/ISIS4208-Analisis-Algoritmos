@@ -1,10 +1,14 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Set;
 
 public class Solucion {
     public static void main(String[] args) throws IOException{
+    	//File file = new File("./src/test.in");
+        //BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         InputStreamReader in = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(in);
 
@@ -16,6 +20,7 @@ public class Solucion {
             int a = Integer.parseInt(numbers[0]);
             int b = Integer.parseInt(numbers[1]);
             graph.addEdge(a, b);
+            graph.addEdge(b, a);
             line=br.readLine();
         }
         int algoritmo = Integer.parseInt(line);
