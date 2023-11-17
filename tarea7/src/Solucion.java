@@ -53,5 +53,6 @@ public class Solucion {
             System.out.print(integer+" ");
         }
         System.out.println();
+        System.out.println(algorithm.size());
     }
 }

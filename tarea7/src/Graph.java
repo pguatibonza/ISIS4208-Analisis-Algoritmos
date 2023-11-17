@@ -29,7 +29,7 @@ public class Graph {
     }
 
     public Set<Integer> firstAlgorithm() {
-
+    	long ini = System.currentTimeMillis();
         Set<Integer> coveredVertices = new HashSet<>();
 
         while (!adjacencyList.isEmpty()) {
@@ -49,25 +49,23 @@ public class Graph {
                 coveredVertices.add(randomVertex2);
 
                 // Actualizar la conexión inversa (no dirigida)
-                for (Integer vertex : list) {
+                for (int i = 0; i < list.size(); i++) {
+                    Integer vertex = list.get(i);
                     List<Integer> list2 = adjacencyList.get(vertex);
                     if (list2 != null) {
                         if (!list2.isEmpty()) {
                             int index = list2.indexOf(randomVertex);
                             list2.remove(index);
                             adjacencyList.put(vertex, list2);
-
                         } else {
                             adjacencyList.remove(vertex);
-
                         }
-
                     }
-
                 }
                 list = adjacencyList.get(randomVertex2);
                 if (list != null) {
-                    for (Integer vertex : list) {
+                    for (int i = 0; i < list.size(); i++) {
+                        Integer vertex = list.get(i);
                         List<Integer> list2 = adjacencyList.get(vertex);
                         if (list2 != null) {
                             if (!list2.isEmpty()) {
@@ -77,10 +75,8 @@ public class Graph {
                                 list2.remove(index);
                                 adjacencyList.put(vertex, list2);
                             }
-
                         }
                     }
-
                 }
 
                 // Descartar ejes de los vertices escogidos
@@ -91,12 +87,14 @@ public class Graph {
                 adjacencyList.remove(randomVertex);
             }
         }
-
+        long fin = System.currentTimeMillis();
+        System.out.println(fin-ini);
         return coveredVertices;
 
     }
 
     public Set<Integer> secondAlgorithm() {
+    	long ini = System.currentTimeMillis();
         Set<Integer> coveredVertices = new HashSet<>();
         while (!adjacencyList.isEmpty()) {
 
@@ -119,31 +117,31 @@ public class Graph {
             List<Integer> list = adjacencyList.get(maxDegreeVertex);
             // Eliminar conexión inversa (no dirigido)
             if (list != null) {
-                for (Integer vertex : list) {
+                for (int i = 0; i < list.size(); i++) {
+                    Integer vertex = list.get(i);
                     List<Integer> list2 = adjacencyList.get(vertex);
                     if (list2 != null) {
                         if (!list2.isEmpty()) {
                             int index = list2.indexOf(maxDegreeVertex);
                             list2.remove(index);
                             adjacencyList.put(vertex, list2);
-
                         } else {
                             adjacencyList.remove(vertex);
-
                         }
                     }
-
                 }
-
             }
 
             // añadir vertice escogido
             coveredVertices.add(maxDegreeVertex);
         }
+        long fin = System.currentTimeMillis();
+        System.out.println(fin-ini);
         return coveredVertices;
     }
 
     public Set<Integer> thirdAlgorithm() {
+    	long ini = System.currentTimeMillis();
         Set<Integer> coveredVertices = new HashSet<>();
 
         while (!adjacencyList.isEmpty()) {
@@ -176,30 +174,30 @@ public class Graph {
 
                 // Eliminar conexión inversa (no dirigido)
 
-                for (Integer vertex : list) {
+                for (int i = 0; i < list.size(); i++) {
+                    Integer vertex = list.get(i);
                     List<Integer> list2 = adjacencyList.get(vertex);
                     if (list2 != null) {
                         if (!list2.isEmpty()) {
                             int index = list2.indexOf(selectedVertex);
                             list2.remove(index);
                             adjacencyList.put(vertex, list2);
-
                         } else {
                             adjacencyList.remove(vertex);
-
                         }
                     }
-
                 }
             } else {
                 adjacencyList.remove(randomVertex);
             }
         }
-
+        long fin = System.currentTimeMillis();
+        System.out.println(fin-ini);
         return coveredVertices;
     }
 
     public Set<Integer> fourthAlgorithm() {
+    	long ini = System.currentTimeMillis();
         Set<Integer> coveredVertices = new HashSet<>();
 
         while (!adjacencyList.isEmpty()) {
@@ -225,27 +223,26 @@ public class Graph {
                 adjacencyList.remove(selectedVertex);
 
                 // Eliminar conexión inversa (no dirigida)
-                for (Integer vertex : list) {
+                for (int i = 0; i < list.size(); i++) {
+                    Integer vertex = list.get(i);
                     List<Integer> list2 = adjacencyList.get(vertex);
                     if (list2 != null) {
                         if (!list2.isEmpty()) {
                             int index = list2.indexOf(selectedVertex);
                             list2.remove(index);
                             adjacencyList.put(vertex, list2);
-
                         } else {
                             adjacencyList.remove(vertex);
-
                         }
                     }
-
                 }
             } else {
                 adjacencyList.remove(randomVertex);
             }
 
         }
-
+        long fin = System.currentTimeMillis();
+        System.out.println(fin-ini);
         return coveredVertices;
     }
 
