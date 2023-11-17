@@ -87,25 +87,23 @@ public class Graph {
                 }
             }
 
-            List<Integer> empty=new ArrayList<>();
             // descartar ejes que llegan al vertice escogido
-            for (Integer vertex : adjacencyList.keySet()) {
-                List<Integer> list = adjacencyList.get(vertex);
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i) == maxDegreeVertex) {
-                        list.remove(i);
-                    }
-                    
+            adjacencyList.remove(maxDegreeVertex);
+            
+            List<Integer> list = adjacencyList.get(maxDegreeVertex);
+            // Eliminar conexión inversa (no dirigido)
+            for(Integer vertex: list){
+                List<Integer> list2 = adjacencyList.get(vertex);
+                list2.remove(Integer.valueOf(maxDegreeVertex));
+                
+                if (list2.isEmpty()) {
+                    adjacencyList.remove(vertex);
                 }
-                if (list.isEmpty()) {
-                  empty.add(vertex);
+                else{
+                    adjacencyList.put(vertex, list2);
                 }
-                adjacencyList.put(vertex, list);
             }
-            //eliminar vertices sin ejes
-            for (Integer integer : empty) {
-                adjacencyList.remove(integer);
-            }
+
             //añadir vertice escogido
             coveredVertices.add(maxDegreeVertex);
         }
